@@ -4,6 +4,7 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Post from "./components/Post";
+import ThreadView from "./pages/ThreadView";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="register" element={<Register />} />
           <Route path="newpost" element={<Post />} />
+          <Route path="threadview" element={<ThreadView />} />
         </Route>
       </Routes>
     </BrowserRouter>
