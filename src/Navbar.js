@@ -21,6 +21,9 @@ function Navbar() {
           <li>
             <Link to="/newpost">New Post</Link>
           </li>
+          <li>
+            <Link to="/threadview">Threads</Link>
+          </li>
 
         </ul>
       </nav>
