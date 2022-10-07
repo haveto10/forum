@@ -1,4 +1,3 @@
-import { color } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 import './Navbar.css'
@@ -7,8 +6,8 @@ function Navbar() {
   return (
     <div className="respmenu">
       <input type="checkbox" />
-      <i class="fas fa-bars"></i>
-      <i class="fas fa-times"></i>
+      <i className="fas fa-bars"></i>
+      <i className="fas fa-times"></i>
       <nav>
         <ul>
 

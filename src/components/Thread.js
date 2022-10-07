@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import { Container, Paper, Button } from "@material-ui/core";
+import { Container } from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import PostsList from "./PostsList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,23 +20,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Thread() {
-  const paperStyle = { padding: "50px 20px", width: 600, margin: "20px auto" };
-  const [name, setName] = useState("");
-  const [id, setId] = useState("");
   const [threads, setThreads] = useState([]);
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    const thread = { id, name };
-    console.log(thread);
-    fetch("http://localhost:8080/thread/addthread", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(thread),
-    }).then(() => {
-      console.log("New Thread added");
-    });
+  const handleClickList = () => {
+    setOpen(!open);
   };
 
   useEffect(() => {
@@ -38,51 +35,33 @@ export default function Thread() {
         setThreads(result);
       });
   }, []);
+
   return (
     <Container>
-      <Paper elevation={3} style={paperStyle}>
-        <h1 style={{ color: "blue" }}>
-          <u>Add Thread</u>
-        </h1>
-
-        <form className={classes.root} noValidate autoComplete="off">
-          <TextField
-            id="outlined-basic"
-            label="Thread First Name"
-            variant="outlined"
-            fullWidth
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-          />
-          <TextField
-            id="outlined-basic"
-            label="Thread Last Name"
-            variant="outlined"
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Button variant="contained" color="secondary" onClick={handleClick}>
-            Submit
-          </Button>
-        </form>
-      </Paper>
-      <h1>Threads</h1>
-
-      <Paper elevation={3} style={paperStyle}>
-        {threads.map((thread) => (
-          <Paper
-            elevation={6}
-            style={{ margin: "10px", padding: "15px", textAlign: "left" }}
-            key={thread.id}
-          >
-            Id:{thread.id}
-            <br />
-            First Name:{thread.name}
-            <br />
-          </Paper>
-        ))}
-      </Paper>
+       {threads.map((thread) => (
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        key={thread.id}
+        className={classes.root}
+      >
+        
+        <ListItem button onClick={handleClickList}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={thread.name} />
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem button className={classes.nested}>
+            <PostsList thread_id={thread.id}/>
+            </ListItem>
+          </List>
+        </Collapse>
+      </List>
+      ))}
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import {
@@ -31,6 +31,7 @@ export default function Post() {
   const [category, setCategory] = useState("");
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [posts, setPosts] = useState([]);
 
   const handleChange = (event) => {
     setCategory(event.target.value);
@@ -55,6 +56,15 @@ export default function Post() {
       console.log("New post added");
     });
   };
+
+  useEffect(() => {
+    fetch("http://localhost:8080/post/getallpost")
+      .then((res) => res.json())
+      .then((result) => {
+        setPosts(result);
+      });
+  }, []);
+
   return (
     <Container>
       <Paper elevation={3} style={paperStyle}>
@@ -115,6 +125,25 @@ export default function Post() {
           </Button>
         </form>
       </Paper>
+
+      <Paper elevation={3} style={paperStyle}>
+        {posts.map((post) => (
+          <Paper
+            elevation={6}
+            style={{ margin: "10px", padding: "15px", textAlign: "left" }}
+            key={post.id}
+          >
+            Id:{post.id}
+            <br />
+            First Name:{post.title}
+            <br />
+            thread:{post.category}
+            <br />
+            {console.log(post)}
+          </Paper>
+        ))}
+      </Paper>
+
     </Container>
   );
 }
