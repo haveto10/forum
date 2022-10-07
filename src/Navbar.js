@@ -18,9 +18,6 @@ function Navbar() {
             <Link to="/register">Register</Link>
           </li>
           <li>
-            <Link to="/newpost">New Post</Link>
-          </li>
-          <li>
             <Link to="/threadview">Threads</Link>
           </li>
 

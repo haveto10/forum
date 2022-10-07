@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Post() {
+export default function Post( {threadId} ) {
   const paperStyle = { padding: "50px 20px", width: 600, margin: "20px auto" };
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -31,7 +31,7 @@ export default function Post() {
   const [category, setCategory] = useState("");
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [posts, setPosts] = useState([]);
+  let thread;
 
   const handleChange = (event) => {
     setCategory(event.target.value);
@@ -46,7 +46,10 @@ export default function Post() {
   };
   const handleClick = (e) => {
     e.preventDefault();
-    const post = { title, body, image, category };
+    thread = threadId;
+    console.log(threadId);
+    console.log(thread);
+    const post = { title, body, image, category, thread };
     console.log(post);
     fetch("http://localhost:8080/post/addpost", {
       method: "POST",
@@ -56,14 +59,6 @@ export default function Post() {
       console.log("New post added");
     });
   };
-
-  useEffect(() => {
-    fetch("http://localhost:8080/post/getallpost")
-      .then((res) => res.json())
-      .then((result) => {
-        setPosts(result);
-      });
-  }, []);
 
   return (
     <Container>
@@ -126,7 +121,7 @@ export default function Post() {
         </form>
       </Paper>
 
-      <Paper elevation={3} style={paperStyle}>
+  {/*     <Paper elevation={3} style={paperStyle}>
         {posts.map((post) => (
           <Paper
             elevation={6}
@@ -142,7 +137,7 @@ export default function Post() {
             {console.log(post)}
           </Paper>
         ))}
-      </Paper>
+      </Paper> */}
 
     </Container>
   );
