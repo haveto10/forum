@@ -17,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
     formControl: {
-        margin: theme.spacing(1),
-        minWidth: 300,
-      },
+      margin: theme.spacing(1),
+      minWidth: 300,
+    },
   },
 }));
 
-export default function Post( {threadId} ) {
+export default function Post({ threadId }) {
   const paperStyle = { padding: "50px 20px", width: 600, margin: "20px auto" };
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -31,6 +31,7 @@ export default function Post( {threadId} ) {
   const [category, setCategory] = useState("");
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = useState("");
   let thread;
 
   const handleChange = (event) => {
@@ -51,11 +52,17 @@ export default function Post( {threadId} ) {
     console.log(thread);
     const post = { title, body, image, category, thread };
     console.log(post);
+
     fetch("http://localhost:8080/post/addpost", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(post),
     }).then(() => {
+      setTitle("");
+      setBody("");
+      setImage("");
+      setCategory("");
+      setMessage("Your post has been added");
       console.log("New post added");
     });
   };
@@ -119,9 +126,10 @@ export default function Post( {threadId} ) {
             Submit
           </Button>
         </form>
+        <div style={{ textAlign: "center" }}>{message}</div>
       </Paper>
 
-  {/*     <Paper elevation={3} style={paperStyle}>
+      {/*     <Paper elevation={3} style={paperStyle}>
         {posts.map((post) => (
           <Paper
             elevation={6}
@@ -138,7 +146,6 @@ export default function Post( {threadId} ) {
           </Paper>
         ))}
       </Paper> */}
-
     </Container>
   );
 }

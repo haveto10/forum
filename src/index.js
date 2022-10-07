@@ -8,6 +8,7 @@ import Post from "./components/Post";
 import ThreadView from "./pages/ThreadView";
 import './index.css'
 
+
 export default function App() {
   const [currentThreadId, setCurrentThreadId] = useState()
 
